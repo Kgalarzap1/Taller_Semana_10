@@ -3,8 +3,9 @@ from modelos.usuario import Usuario
 
 
 class Restaurante:
+
     def __init__(self) -> None:
-        # LISTAS: colecciones dinámicas
+
         self.productos: list[Producto] = []
         self.usuarios: list[Usuario] = []
 
@@ -19,12 +20,17 @@ class Restaurante:
             return False
 
         self.productos.append(producto)
+
         return True
 
-    def buscar_producto(self, codigo: str) -> Producto | None:
+    def buscar_producto(
+        self,
+        codigo: str
+    ) -> Producto | None:
         """Busca un producto por su código."""
 
         for producto in self.productos:
+
             if producto.codigo == codigo:
                 return producto
 
@@ -44,9 +50,16 @@ class Restaurante:
         if producto is None:
             return False
 
-        producto.nombre = nombre
-        producto.categoria = categoria
-        producto.precio = precio
+        producto_actualizado = Producto(
+            codigo=producto.codigo,
+            nombre=nombre,
+            categoria=categoria,
+            precio=precio
+        )
+
+        producto.nombre = producto_actualizado.nombre
+        producto.categoria = producto_actualizado.categoria
+        producto.precio = producto_actualizado.precio
 
         return True
 
@@ -59,12 +72,21 @@ class Restaurante:
             return False
 
         self.productos.remove(producto)
+
         return True
 
     def listar_productos(self) -> list[Producto]:
         """Devuelve la lista de productos."""
 
         return self.productos
+
+    def cargar_productos(
+        self,
+        productos: list[Producto]
+    ) -> None:
+        """Carga una lista de productos en el restaurante."""
+
+        self.productos = productos
 
     # ==========================
     # USUARIOS
@@ -74,10 +96,15 @@ class Restaurante:
         """Registra un usuario evitando identificaciones duplicadas."""
 
         for usuario_registrado in self.usuarios:
-            if usuario_registrado.identificacion == usuario.identificacion:
+
+            if (
+                usuario_registrado.identificacion
+                == usuario.identificacion
+            ):
                 return False
 
         self.usuarios.append(usuario)
+
         return True
 
     def listar_usuarios(self) -> list[Usuario]:
